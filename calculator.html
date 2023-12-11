@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Space Calculator</title>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
+
+
+  <style>
+    body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+  background: url('space.jpg') center center fixed;
+  background-size: cover;
+    }
+
+@keyframes meteorShower {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(100%);
+  }
+}
+
+    #calculator {
+      background: rgba(0, 0, 0, 0.8);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+      animation: glow 2s infinite alternate;
+    }
+
+    @keyframes glow {
+      from {
+        border: 2px solid #3498db;
+        box-shadow: 0 0 10px rgba(52, 152, 219, 0.8);
+      }
+      to {
+        border: 2px solid #2ecc71;
+        box-shadow: 0 0 10px rgba(46, 204, 113, 0.8);
+      }
+    }
+
+    input {
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 10px;
+      font-size: 18px;
+      border: none;
+      border-radius: 5px;
+      outline: none;
+      color: #fff;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    button {
+  width: 48px;
+  height: 48px;
+  margin: 5px;
+  padding: 5px 10px;
+  font-size: 18px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s, box-shadow 0.3s;
+  background-color: #34495e; 
+  color: #ecf0f1; 
+}
+
+button:hover {
+  background: #2c3e50; 
+  color: #fff; 
+  box-shadow: 0 0 10px rgba(52, 73, 94, 0.8);
+}
+
+
+    .space-heading {
+  text-align: center;
+  font-size: 36px;
+  color: #fff;
+  font-family: 'Orbitron', sans-serif;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  animation: fadeIn 2s;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6 mt-5">
+        <h1 class="space-heading">Space Calculator</h1>
+        <div id="calculator">
+          <input type="text" class="form-control mb-3" id="display" readonly>
+          <div class="row">
+            <div class="col-3">
+              <button class="btn btn-secondary" onclick="appendCharacter('1')">1</button>
+            </div>
+            <div class="col-3">
+              <button class="btn btn-secondary" onclick="appendCharacter('2')">2</button>
+            </div>
+            <div class="col-3">
+              <button class="btn btn-secondary" onclick="appendCharacter('3')">3</button>
+            </div>
+            <div class="col-3">
+              <button class="btn btn-primary" onclick="appendCharacter('+')">+</button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-3">
+              <button class="btn btn-secondary" onclick="appendCharacter('4')">4</button>
+            </div>
+            <div class="col-3">
+              <button class="btn btn-secondary" onclick="appendCharacter('5')">5</button>
+            </div>
+            <div class="col-3">
+              <button class="btn btn-secondary" onclick="appendCharacter('6')">6</button>
+            </div>
+            <div class="col-3">
+              <button class="btn btn-primary" onclick="appendCharacter('-')">-</button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-3">
+              <button class="btn btn-secondary" onclick="appendCharacter('7')">7</button>
+            </div>
+            <div class="col-3">
+              <button class="btn btn-secondary" onclick="appendCharacter('8')">8</button>
+            </div>
+            <div class="col-3">
+              <button class="btn btn-secondary" onclick="appendCharacter('9')">9</button>
+            </div>
+            <div class="col-3">
+              <button class="btn btn-primary" onclick="appendCharacter('*')">*</button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-3">
+              <button class="btn btn-secondary" onclick="appendCharacter('0')">0</button>
+            </div>
+            <div class="col-3">
+              <button class="btn btn-danger" onclick="clearDisplay()">C</button>
+            </div>
+            <div class="col-3">
+              <button class="btn btn-success" onclick="calculate()">=</button>
+            </div>
+            <div class="col-3">
+              <button class="btn btn-primary" onclick="appendCharacter('/')">/</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const display = document.getElementById('display');
+
+    function appendCharacter(char) {
+      display.value += char;
+    }
+
+    function clearDisplay() {
+      display.value = '';
+    }
+
+    function calculate() {
+      try {
+        display.value = eval(display.value);
+      } catch (error) {
+        display.value = 'Error';
+      }
+    }
+  </script>
+</body>
+</html>
+
